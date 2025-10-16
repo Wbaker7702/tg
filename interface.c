@@ -3447,7 +3447,7 @@ void interpreter_ex (char *line, void *ex) {
     return;
   }
 
-  if (line && *line) {
+  if (*line) {
     add_history (line);
   }
   
