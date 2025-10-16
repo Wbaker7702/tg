@@ -806,7 +806,7 @@ void print_backtrace (void) {
 }
 #else
 void print_backtrace (void) {
-  if (write (1, "No libexec. Backtrace disabled\n", 32) < 0) {
+  if (write (1, "No libexec. Backtrace disabled\n", sizeof("No libexec. Backtrace disabled\n") - 1) < 0) {
     // Sad thing
   }
 }
@@ -821,7 +821,7 @@ void termination_signal_handler (int signum) {
     rl_cleanup_after_signal ();
   }
   
-  if (write (1, "SIGNAL received\n", 18) < 0) { 
+  if (write (1, "SIGNAL received\n", sizeof("SIGNAL received\n") - 1) < 0) { 
     // Sad thing
   }
  
@@ -845,7 +845,7 @@ volatile int sigterm_cnt;
 void sig_term_handler (int signum __attribute__ ((unused))) {
   signal (signum, termination_signal_handler);
   //set_terminal_attributes ();
-  if (write (1, "SIGTERM/SIGINT received\n", 25) < 0) { 
+  if (write (1, "SIGTERM/SIGINT received\n", sizeof("SIGTERM/SIGINT received\n") - 1) < 0) { 
     // Sad thing
   }
   //if (TLS && TLS->ev_base) {
@@ -865,7 +865,7 @@ void do_halt (int error) {
     rl_cleanup_after_signal ();
   }
 
-  if (write (1, "halt\n", 5) < 0) { 
+  if (write (1, "halt\n", sizeof("halt\n") - 1) < 0) { 
     // Sad thing
   }
  
