@@ -1,0 +1,96 @@
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl/tl-parser -c -MP -MD -MF dep/tlc.d -MQ objs/tlc.o -o objs/tlc.o tgl/tl-parser/tlc.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/generate.d -MQ objs/generate.o -o objs/generate.o tgl/generate.c
+gcc objs/tl-parser.o objs/tlc.o -L/usr/local/lib -L/usr/lib -L/usr/lib  -rdynamic -ggdb -levent -ljansson -lconfig -lz -levent   -lreadline -llua5.2  -lm -lssl -lcrypto  -ldl -lpthread -lutil -o bin/tl-parser
+bin/tl-parser -e auto/scheme.tlo auto/scheme.tl
+bin/tl-parser -E auto/scheme.tl 2> auto/scheme2.tl  || ( cat auto/scheme2.tl && rm auto/scheme2.tl && false )
+awk -f ./tgl/gen_constants_h.awk < auto/scheme2.tl > auto/constants.h
+gcc objs/generate.o objs/tools.o objs/crypto/rand_openssl.o objs/crypto/rand_altern.o objs/crypto/err_openssl.o objs/crypto/err_altern.o -L/usr/local/lib -L/usr/lib -L/usr/lib  -rdynamic -ggdb -levent -ljansson -lconfig -lz -levent   -lreadline -llua5.2  -lm -lssl -lcrypto  -ldl -lpthread -lutil -o bin/generate
+bin/generate -g skip-header auto/scheme.tlo > auto/auto-skip.h  || ( rm auto/auto-skip.h && false )
+bin/generate -g fetch-header auto/scheme.tlo > auto/auto-fetch.h  || ( rm auto/auto-fetch.h && false )
+bin/generate -g store-header auto/scheme.tlo > auto/auto-store.h  || ( rm auto/auto-store.h && false )
+bin/generate -g autocomplete-header auto/scheme.tlo > auto/auto-autocomplete.h  || ( rm auto/auto-autocomplete.h && false )
+bin/generate -g types-header auto/scheme.tlo > auto/auto-types.h  || ( rm auto/auto-types.h && false )
+bin/generate -g fetch-ds-header auto/scheme.tlo > auto/auto-fetch-ds.h  || ( rm auto/auto-fetch-ds.h && false )
+bin/generate -g free-ds-header auto/scheme.tlo > auto/auto-free-ds.h  || ( rm auto/auto-free-ds.h && false )
+bin/generate -g store-ds-header auto/scheme.tlo > auto/auto-store-ds.h  || ( rm auto/auto-store-ds.h && false )
+bin/generate -g print-ds-header auto/scheme.tlo > auto/auto-print-ds.h  || ( rm auto/auto-print-ds.h && false )
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/main.d -MQ objs/main.o -o objs/main.o main.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/loop.d -MQ objs/loop.o -o objs/loop.o loop.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/interface.d -MQ objs/interface.o -o objs/interface.o interface.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/lua-tg.d -MQ objs/lua-tg.o -o objs/lua-tg.o lua-tg.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/json-tg.d -MQ objs/json-tg.o -o objs/json-tg.o json-tg.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/python-tg.d -MQ objs/python-tg.o -o objs/python-tg.o python-tg.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -c -MP -MD -MF dep/python-types.d -MQ objs/python-types.o -o objs/python-types.o python-types.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/mtproto-common.d -MQ objs/mtproto-common.o -o objs/mtproto-common.o tgl/mtproto-common.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/mtproto-client.d -MQ objs/mtproto-client.o -o objs/mtproto-client.o tgl/mtproto-client.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/mtproto-key.d -MQ objs/mtproto-key.o -o objs/mtproto-key.o tgl/mtproto-key.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/queries.d -MQ objs/queries.o -o objs/queries.o tgl/queries.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/structures.d -MQ objs/structures.o -o objs/structures.o tgl/structures.c
+tgl/queries.c: In function ‘_tgl_do_send_photo’:
+tgl/queries.c:2091:10: error: cast between incompatible function types from ‘void (*)(struct tgl_state *, void *, int,  struct tgl_message *)’ to ‘void (*)(struct tgl_state *, void *, int)’ [-Werror=cast-function-type]
+ 2091 |         ((void (*)(struct tgl_state *, void *, int))callback) (TLS, callback_extra, 0);
+      |          ^
+tgl/queries.c:2108:10: error: cast between incompatible function types from ‘void (*)(struct tgl_state *, void *, int,  struct tgl_message *)’ to ‘void (*)(struct tgl_state *, void *, int)’ [-Werror=cast-function-type]
+ 2108 |         ((void (*)(struct tgl_state *, void *, int))callback) (TLS, callback_extra, 0);
+      |          ^
+tgl/queries.c:2141:10: error: cast between incompatible function types from ‘void (*)(struct tgl_state *, void *, int,  struct tgl_message *)’ to ‘void (*)(struct tgl_state *, void *, int)’ [-Werror=cast-function-type]
+ 2141 |         ((void (*)(struct tgl_state *, void *, int))callback) (TLS, callback_extra, 0);
+      |          ^
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/binlog.d -MQ objs/binlog.o -o objs/binlog.o tgl/binlog.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/tgl.d -MQ objs/tgl.o -o objs/tgl.o tgl/tgl.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/updates.d -MQ objs/updates.o -o objs/updates.o tgl/updates.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/tgl-net.d -MQ objs/tgl-net.o -o objs/tgl-net.o tgl/tgl-net.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/tgl-timers.d -MQ objs/tgl-timers.o -o objs/tgl-timers.o tgl/tgl-timers.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/tg-mime-types.d -MQ objs/tg-mime-types.o -o objs/tg-mime-types.o tgl/tg-mime-types.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/mtproto-utils.d -MQ objs/mtproto-utils.o -o objs/mtproto-utils.o tgl/mtproto-utils.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/bn_openssl.d -MQ objs/crypto/bn_openssl.o -o objs/crypto/bn_openssl.o tgl/crypto/bn_openssl.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/bn_altern.d -MQ objs/crypto/bn_altern.o -o objs/crypto/bn_altern.o tgl/crypto/bn_altern.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/rsa_pem_openssl.d -MQ objs/crypto/rsa_pem_openssl.o -o objs/crypto/rsa_pem_openssl.o tgl/crypto/rsa_pem_openssl.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/rsa_pem_altern.d -MQ objs/crypto/rsa_pem_altern.o -o objs/crypto/rsa_pem_altern.o tgl/crypto/rsa_pem_altern.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/md5_openssl.d -MQ objs/crypto/md5_openssl.o -o objs/crypto/md5_openssl.o tgl/crypto/md5_openssl.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/md5_altern.d -MQ objs/crypto/md5_altern.o -o objs/crypto/md5_altern.o tgl/crypto/md5_altern.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/sha_openssl.d -MQ objs/crypto/sha_openssl.o -o objs/crypto/sha_openssl.o tgl/crypto/sha_openssl.c
+gcc -I. -I. -I./tgl -g -O2  -I/usr/local/include -I/usr/include -I/usr/include -I/usr/include/lua5.2  -DHAVE_CONFIG_H -Wall -Werror -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -iquote ./tgl -c -MP -MD -MF dep/crypto/sha_altern.d -MQ objs/crypto/sha_altern.o -o objs/crypto/sha_altern.o tgl/crypto/sha_altern.c
+tgl/crypto/rsa_pem_openssl.c: In function ‘TGLC_rsa_new’:
+tgl/crypto/rsa_pem_openssl.c:41:6: error: invalid use of incomplete typedef ‘RSA’ {aka ‘struct rsa_st’}
+   41 |   ret->e = unwrap_bn (TGLC_bn_new ());
+      |      ^~
+tgl/crypto/rsa_pem_openssl.c:42:33: error: invalid use of incomplete typedef ‘RSA’ {aka ‘struct rsa_st’}
+   42 |   TGLC_bn_set_word (wrap_bn (ret->e), e);
+      |                                 ^~
+tgl/crypto/rsa_pem_openssl.c:43:6: error: invalid use of incomplete typedef ‘RSA’ {aka ‘struct rsa_st’}
+   43 |   ret->n = unwrap_bn (TGLC_bn_bin2bn (n, n_bytes, NULL));
+      |      ^~
+tgl/crypto/rsa_pem_openssl.c: In function ‘TGLC_rsa_n’:
+tgl/crypto/rsa_pem_openssl.c:49:37: error: invalid use of incomplete typedef ‘RSA’ {aka ‘struct rsa_st’}
+   49 |     return wrap_bn (unwrap_rsa (key)->M);                                      \
+      |                                     ^~
+tgl/crypto/rsa_pem_openssl.c:52:1: note: in expansion of macro ‘RSA_GETTER’
+   52 | RSA_GETTER(n);
+      | ^~~~~~~~~~
+tgl/crypto/rsa_pem_openssl.c: In function ‘TGLC_rsa_e’:
+tgl/crypto/rsa_pem_openssl.c:49:37: error: invalid use of incomplete typedef ‘RSA’ {aka ‘struct rsa_st’}
+   49 |     return wrap_bn (unwrap_rsa (key)->M);                                      \
+      |                                     ^~
+tgl/crypto/rsa_pem_openssl.c:53:1: note: in expansion of macro ‘RSA_GETTER’
+   53 | RSA_GETTER(e);
+      | ^~~~~~~~~~
+tgl/crypto/rsa_pem_openssl.c: In function ‘TGLC_rsa_n’:
+tgl/crypto/rsa_pem_openssl.c:50:3: error: control reaches end of non-void function [-Werror=return-type]
+   50 |   }                                                                            \
+      |   ^
+tgl/crypto/rsa_pem_openssl.c:52:1: note: in expansion of macro ‘RSA_GETTER’
+   52 | RSA_GETTER(n);
+      | ^~~~~~~~~~
+tgl/crypto/rsa_pem_openssl.c: In function ‘TGLC_rsa_e’:
+tgl/crypto/rsa_pem_openssl.c:50:3: error: control reaches end of non-void function [-Werror=return-type]
+   50 |   }                                                                            \
+      |   ^
+tgl/crypto/rsa_pem_openssl.c:53:1: note: in expansion of macro ‘RSA_GETTER’
+   53 | RSA_GETTER(e);
+      | ^~~~~~~~~~
+cc1: all warnings being treated as errors
+make: *** [Makefile.tgl:20: objs/crypto/rsa_pem_openssl.o] Error 1
+make: *** Waiting for unfinished jobs....
+cc1: all warnings being treated as errors
+make: *** [Makefile.tgl:20: objs/queries.o] Error 1
